@@ -1,0 +1,51 @@
+{
+	"database": {
+	  "Method": "GET",
+	  "Resource": "https://localhost/piwebapi/assetdatabases?path=\\\\WIN-DQAHTRTV6MI\\Database3&selectedFields=WebId;Links.Elements"
+	},
+	"child": {
+	  "Method": "GET",
+	  "Resource": "{0}?nameFilter=Cells&selectedFields=Items.Name;Items.Path;Items.Links.Elements",
+	  "ParentIds": [
+		"database"
+	  ],
+	  "Parameters": [
+		"$.database.Content.Links.Elements"
+	  ]
+	},
+	"elements": {
+	  "Method": "GET",
+	  "Resource": "{0}?nameFilter=MSU*&selectedFields=Items.Name;Items.Path;Items.Links.Elements",
+	  "ParentIds": [
+		"child"
+	  ],
+	  "Parameters": [
+		"$.child.Content.Items[0].Links.Elements"
+	  ]
+	},
+	"attributes": {
+	  "Method": "GET",
+	  "RequestTemplate": {
+		"Resource": "https://localhost/piwebapi/attributes/multiple?selectedFields=Items.Object.Name;Items.Object.Path;Items.Object.WebId&path={0}|U&path={0}|PH&path={0}|KU&path={0}|PR&path={0}|VR"
+	  },
+	  "ParentIds": [
+		"elements"
+	  ],
+	  "Parameters": [
+		"$.elements.Content.Items[*].Path"
+	  ]
+	},
+	"values": {
+	  "Method": "GET",
+	  "RequestTemplate": {
+		"Resource": "https://localhost/piwebapi/streams/{0}/recordedattime?time=2019-03-10T00:00:00Z"
+	  },
+	  "ParentIds": [
+		"attributes"
+	  ],
+	  "Parameters": [
+		"$.attributes.Content.Items[*].Content.Items[*].Object.WebId"
+	  ]
+	}
+  }
+  
