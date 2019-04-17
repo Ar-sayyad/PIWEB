@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.9.5.8352" ExportMode="NoUniqueID" PISystem="PISRV01" Database="Lab Building Data" Description="" Created="2018-11-09T00:41:01.3952412Z" id="4768f92f-dbfd-4ca2-b186-46124a5fd1fe" ParentKey="4768f92f-dbfd-4ca2-b186-46124a5fd1fe" ExportedObject="CategoriesElement" ExportedType="AFCategories" Identity="CategoriesElement">
+  <AFElementCategory>
+    <Name>asset_design</Name>
+  </AFElementCategory>
+  <AFElementCategory>
+    <Name>asset_design_block</Name>
+  </AFElementCategory>
+  <AFElementCategory>
+    <Name>asset_design_cell</Name>
+  </AFElementCategory>
+  <AFElementCategory>
+    <Name>asset_design_acid_line</Name>
+  </AFElementCategory>
+  <AFElementCategory>
+    <Name>asset_design_vr_line</Name>
+  </AFElementCategory>
+  <AFElementCategory>
+    <Name>asset_design_pr_line</Name>
+  </AFElementCategory>
+</AF>

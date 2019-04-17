@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.9.5.8352" ExportMode="NoUniqueID" PISystem="PISRV01" Created="2018-11-09T00:41:46.9538019Z" ExportedObject="NamedCollectionList" ExportedType="AFNamedCollectionList`1" Identity="CategoryAttribute">
+  <AFAttributeCategory>
+    <Name>masterdashboard_timestamp</Name>
+  </AFAttributeCategory>
+  <AFAttributeCategory>
+    <Name>masterdashboard_trend</Name>
+  </AFAttributeCategory>
+  <AFAttributeCategory>
+    <Name>masterdashboard_value</Name>
+  </AFAttributeCategory>
+</AF>

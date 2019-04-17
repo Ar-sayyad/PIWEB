@@ -1,0 +1,2032 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.9.5.8352" ExportMode="NoUniqueID" PISystem="PISRV01" Created="2018-11-09T00:40:31.4811474Z" ExportedObject="NamedCollectionList" ExportedType="AFNamedCollectionList`1" Identity="ElementTemplate">
+  <AFElementTemplate>
+    <Name>ISR</Name>
+    <Description>Abstract template which contains common attributes for ISR elements (should not be instanciated)</Description>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFAttributeTemplate>
+      <Name>NAME</Name>
+      <Description>Name of the element (calculation)</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>"%Element%";</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>TEST</Name>
+      <Type>Int32</Type>
+      <Value type="Int32">0</Value>
+    </AFAttributeTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>ACID_LINE</Name>
+    <Description>Acid line</Description>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFElementCategoryRef>asset_design</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_block</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>ACID</Name>
+      <DefaultUOM>L/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management</ConfigString>
+      <AFAttributeTemplate>
+        <Name>ACID_DENSITY</Name>
+        <DefaultUOM>g/cm3</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">1.84</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_SUMMATOR_VALUE</Name>
+        <DefaultUOM>m3</DefaultUOM>
+        <Type>Int32</Type>
+        <Value type="Int32">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>MASS</Name>
+      <DefaultUOM>t/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=ACID;UOM=L/d;B=|ACID|ACID_DENSITY;UOM=t/L;[(if badval(A) then 0 else A) * B]</ConfigString>
+    </AFAttributeTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>BLOCK</Name>
+    <Description>Technological block</Description>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFExtendedProperty>
+      <Name>Override</Name>
+      <Type>Object</Type>
+      <Value />
+    </AFExtendedProperty>
+    <AFElementCategoryRef>asset_design</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>ACID_CONCENTRATION</Name>
+      <DefaultUOM>g/L</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|ACID_LINE_1|CONCENTRATION;B=|ACID_LINE_2|CONCENTRATION;C=|ACID_LINE_3|CONCENTRATION;[((if badval(A) then 0 else A)+(if badval(B) then 0 else B)+(if badval(C) then 0 else C))/(1 + (if badval(B) then 0 else 1) + (if badval(C) then 0 else 1))];UOM=g/L</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>ACID_LINE_1</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=ACID_LINE_L][@Index=1]|NAME', ".\[@Template=ACID_LINE_L][@Index=1]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>ACID</Name>
+        <DefaultUOM>L/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=1]|ACID;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>ACID_DENSITY</Name>
+        <DefaultUOM>g/cm3</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=1]|ACID|ACID_DENSITY;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>CONCENTRATION</Name>
+        <DefaultUOM>g/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=ACID;UOM=L/h;B=|VR_LINE_1|VR;UOM=L/h;C=ACID_DENSITY;UOM=g/L;[if badval(B) or B == 0 then 0 else (if badval(A) then 0 else (A / B) * C)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>MASS</Name>
+        <DefaultUOM>t/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=1]|MASS;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>ACID_LINE_2</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=ACID_LINE_L][@Index=2]|NAME', ".\[@Template=ACID_LINE_L][@Index=2]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>ACID</Name>
+        <DefaultUOM>L/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=2]|ACID;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>ACID_DENSITY</Name>
+        <DefaultUOM>g/cm3</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=2]|ACID|ACID_DENSITY;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>CONCENTRATION</Name>
+        <DefaultUOM>g/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=ACID;UOM=L/h;B=|VR_LINE_2|VR;UOM=L/h;C=ACID_DENSITY;UOM=g/L;[if badval(B) or B == 0 then 0 else (if badval(A) then 0 else (A / B) * C)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>MASS</Name>
+        <DefaultUOM>t/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=2]|MASS;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>ACID_LINE_3</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=ACID_LINE_L][@Index=3]|NAME', ".\[@Template=ACID_LINE_L][@Index=3]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>ACID</Name>
+        <DefaultUOM>L/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=3]|ACID;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>ACID_DENSITY</Name>
+        <DefaultUOM>g/cm3</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=3]|ACID|ACID_DENSITY;[A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>CONCENTRATION</Name>
+        <DefaultUOM>g/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=ACID;UOM=L/h;B=|VR_LINE_3|VR;UOM=L/h;C=ACID_DENSITY;UOM=g/L;[if badval(B) or B == 0 then 0 else (if badval(A) then 0 else (A / B) * C)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>MASS</Name>
+        <DefaultUOM>t/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=ACID_LINE_L][@Index=3]|MASS;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>ACID_MASS</Name>
+      <DefaultUOM>t/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|ACID_LINE_1|MASS;B=|ACID_LINE_2|MASS;C=|ACID_LINE_3|MASS;[if badval(A) and badval(B) and badval(C) then digstate("No Data") else (if badval(A) then 0 else A) + (if badval(B) then 0 else B) + (if badval(C) then 0 else C)]</ConfigString>
+      <AFAttributeTemplate>
+        <Name>ACIDIFICATION</Name>
+        <DefaultUOM>t/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|ACID_MASS;B=|CONNECTION_TO_PLANT;[if (B &lt;= %Time%) then digstate("No Data") else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PRODUCTION</Name>
+        <DefaultUOM>t/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|ACID_MASS;B=|CONNECTION_TO_PLANT;[if (B &gt; %Time%) then digstate("No Data") else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>ACIDIFICATION_START</Name>
+      <Type>DateTime</Type>
+      <Value type="DateTime">1999-12-31T18:00:00Z</Value>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>BALANCE</Name>
+      <Description>PR minus VR balance (m3/h) (calculation)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=PR;B=VR;[A-B]</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_timestamp</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_BALANCE</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>CONNECTION_TO_PLANT</Name>
+      <Type>DateTime</Type>
+      <Value type="DateTime">1999-12-31T18:00:00Z</Value>
+      <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>FORMATTED</Name>
+        <Type>String</Type>
+        <Value type="String">0</Value>
+        <DataReference>String Builder</DataReference>
+        <ConfigString>Format('|CONNECTION_TO_PLANT',"yyyy-MM-dd");</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>KU</Name>
+      <Description>Kilogram of U per day (kg/d) (calculation)</Description>
+      <DefaultUOM>kg/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=PR;UOM=m3/d;B=U;UOM=kg/m3;[if badval(A) or badval(B) then digstate("No Data") else A * B]</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_timestamp</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_KU</Name>
+        <Description>Last value of KU (kg/d) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_KU_DATE</Name>
+        <Description>Last date for KU (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PH</Name>
+      <Description>pH of the block (tag)</Description>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management;step=1</ConfigString>
+      <AFAttributeTemplate>
+        <Name>BAD_PH</Name>
+        <Description>Truncated trend of pH when the value is &gt; |TARGET (calculation)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PH;B=TARGET;[if badval(A) then 0 else (if A &gt; B then (A - B) else 0)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>GOOD_PH</Name>
+        <Description>Truncated trend of pH when the value is &lt;= |TARGET (calculation)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PH;B=TARGET;[if badval(A) then 0 else (if A &lt;= B then A else B)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PH</Name>
+        <Description>Last value of pH (analysis) (for ArcGIS use)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PH_DATE</Name>
+        <Description>Last date for pH (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>TARGET</Name>
+        <Description>Target of good pH (default value 1.8)</Description>
+        <Type>Double</Type>
+        <Value type="Double">1.8</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PLANT</Name>
+      <Description>Plant ID where the block is connected</Description>
+      <Type>AFEnumerationValue</Type>
+      <Value type="AFEnumerationValue">94a1ed52-4ca5-4dd2-aafa-b99254fd8736?0?Not connected</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Int16;descriptor=Well Field Management;step=1</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PR</Name>
+      <Description>Flowrate of the block (m3/h) (tag)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_PR</Name>
+        <Description>Last flowrate value (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PR_DATE</Name>
+        <Description>Last flowrate date (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_SUMMATOR_VALUE</Name>
+        <DefaultUOM>m3</DefaultUOM>
+        <Type>Int32</Type>
+        <Value type="Int32">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_CONNECTED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PR;B=|PLANT;[if (if badval(B) then 0 else B) &gt; 1 then (if badval(A) then 0 else A) else 0]</ConfigString>
+        <AFAttributeCategoryRef>masterdashboard_timestamp</AFAttributeCategoryRef>
+        <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+        <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_MKMNEW</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PR;B=|PLANT;[if ((if badval(B) then 0 else B) and 8) == 8 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_MKMOLD</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PR;B=|PLANT;[if ((if badval(B) then 0 else B) and 4) == 4 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_RECIRCULATION</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PR;B=|PLANT;[if ((if badval(B) then 0 else B) and 1) == 1 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_TKD</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PR;B=|PLANT;[if ((if badval(B) then 0 else B) and 2) == 2 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PRODUCTION_STOP</Name>
+      <Type>DateTime</Type>
+      <Value type="DateTime">1999-12-31T18:00:00Z</Value>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>STATUS</Name>
+      <Type>String</Type>
+      <Value type="String">Active</Value>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>U</Name>
+      <Description>Concentration of Uranium of the block (mg/L) (tag)</Description>
+      <DefaultUOM>mg/L</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management;step=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_timestamp</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_U</Name>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_U_DATE</Name>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|VR_LINE_1|VR;B=|VR_LINE_2|VR;C=|VR_LINE_3|VR;[(if badval(A) then 0 else A) + (if badval(B) then 0 else B) + (if badval(C) then 0 else C)]</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_VR</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_VR_DATE</Name>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_CONNECTED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|VR;B=|PLANT;[if (if badval(B) then 0 else B) &gt; 1 then (if badval(A) then 0 else A) else 0]</ConfigString>
+        <AFAttributeCategoryRef>masterdashboard_timestamp</AFAttributeCategoryRef>
+        <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+        <AFAttributeCategoryRef>masterdashboard_value</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_MKMNEW</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|VR;B=|PLANT;[if ((if badval(B) then 0 else B) and 64) == 64 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_MKMOLD</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|VR;B=|PLANT;[if ((if badval(B) then 0 else B) and 32) == 32 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_RECIRCULATION</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|VR;B=|PLANT;[if ((if badval(B) then 0 else B) and 1) == 1 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_TKD</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|VR;B=|PLANT;[if ((if badval(B) then 0 else B) and 16) == 16 then (if badval(A) then 0 else A) else 0]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR_LINE_1</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=VR_LINE][@Index=1]|NAME', ".\[@Template=VR_LINE][@Index=1]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=VR_LINE][@Index=1]|VR;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR_LINE_2</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=VR_LINE][@Index=2]|NAME', ".\[@Template=VR_LINE][@Index=2]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=VR_LINE][@Index=2]|VR;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR_LINE_3</Name>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=VR_LINE][@Index=3]|NAME', ".\[@Template=VR_LINE][@Index=3]|NAME", "UNDEFINED");</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=VR_LINE][@Index=3]|VR;[A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_BALANCE</Name>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastBalance := if BadVal('{a7c0fa8a-3c57-4194-aff2-3a7d5cda1e36};BALANCE') then NoOutput() else PrevVal('{a7c0fa8a-3c57-4194-aff2-3a7d5cda1e36};BALANCE', '*');</ConfigString>
+        <VariableMapping>LastBalance||BALANCE|LAST_BALANCE;[GUID]||{de72aa11-45b1-4d8b-8d1d-40313368b408};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_KU</Name>
+      <Description>Retrieve last KU value (for ArcGIS use)</Description>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastKU := if BadVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U') then NoOutput() else PrevVal('{142e1b6f-cf18-49b3-b791-a41f35e919e1};KU', '*');&#xD;
+LastKUDate := if BadVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U') then NoOutput() else TimeStamp(PrevVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U', '*'));</ConfigString>
+        <VariableMapping>LastKU||KU|LAST_KU;[GUID]||{e740e3cf-2b3d-4768-9485-4b4e58e9066b};LastKUDate||KU|LAST_KU_DATE;[GUID]||{70c0cf12-0557-428a-93dd-d7ebcb6cfaf5};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PH</Name>
+      <Description>Retrieve last pH value (for ArcGIS use)</Description>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastPH := if BadVal('{7b143ed9-0123-4891-b897-21bf6fbe6a38};PH') then NoOutput() else PrevVal('{7b143ed9-0123-4891-b897-21bf6fbe6a38};PH', '*');&#xD;
+LastPHDate := if BadVal('{7b143ed9-0123-4891-b897-21bf6fbe6a38};PH') then NoOutput() else TimeStamp(PrevVal('{7b143ed9-0123-4891-b897-21bf6fbe6a38};PH','*'));</ConfigString>
+        <VariableMapping>LastPH||PH|LAST_PH;[GUID]||{c31b3dc0-f919-4745-8ded-7dd334638cec};LastPHDate||PH|LAST_PH_DATE;[GUID]||{19ca80d0-b262-4226-9307-4d6fecadaae9};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PR</Name>
+      <Description>Retrieve last PR value (for ArcGIS use)</Description>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastFlow := if BadVal('{eaa2002d-a8e4-43df-80da-4765f3fcbfeb};FLOW') then NoOutput() else PrevVal('{eaa2002d-a8e4-43df-80da-4765f3fcbfeb};FLOW', '*');&#xD;
+LastFlowDate := if BadVal('{eaa2002d-a8e4-43df-80da-4765f3fcbfeb};FLOW') then NoOutput() else TimeStamp(PrevVal('{eaa2002d-a8e4-43df-80da-4765f3fcbfeb};FLOW','*'));</ConfigString>
+        <VariableMapping>LastFlow||PR|LAST_PR;[GUID]||{fcc2c214-df7c-445d-8f81-1a49d8511870};LastFlowDate||PR|LAST_PR_DATE;[GUID]||{6d084f40-853c-4d85-b81a-e504f1d311e6};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_U</Name>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastU := if BadVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U') then NoOutput() else PrevVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U', '*');&#xD;
+LastUDate := if BadVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U') then NoOutput() else TimeStamp(PrevVal('{b438cb09-2097-490b-ba76-7342bed8a5d4};U', '*'));</ConfigString>
+        <VariableMapping>LastU||U|LAST_U;[GUID]||{407707dc-68ea-493e-8973-6c1d6802bf62};LastUDate||U|LAST_U_DATE;[GUID]||{12e6af26-5a10-4b46-9fb3-d3eda3b6c50d};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_VR</Name>
+      <Target>BLOCK</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastVR := if BadVal('{3c45828a-8084-45ac-8176-7d8577047e23};VR') then NoOutput() else PrevVal('{3c45828a-8084-45ac-8176-7d8577047e23};VR', '*');&#xD;
+LastVRDate := if BadVal('{3c45828a-8084-45ac-8176-7d8577047e23};VR') then NoOutput() else TimeStamp(PrevVal('{3c45828a-8084-45ac-8176-7d8577047e23};VR','*'));</ConfigString>
+        <VariableMapping>LastVR||VR|LAST_VR;[GUID]||{22009b66-43e4-489e-8032-a68ad77f223e};LastVRDate||VR|LAST_VR_DATE;[GUID]||{bdee1c7a-9756-4ff4-9317-6c125932201d};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>CELL</Name>
+    <Description>Technological cell</Description>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFExtendedProperty>
+      <Name>Override</Name>
+      <Type>Object</Type>
+      <Value />
+    </AFExtendedProperty>
+    <AFElementCategoryRef>asset_design</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_block</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>BALANCE</Name>
+      <Description>PR/VR balance (m3/h) (calculation)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=PR;B=VR;[A-B];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_BALANCE</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ1</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=1]|NAME', ".\[@Template=INJECTOR][@Index=1]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=1]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=1]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ10</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=10]|NAME', ".\[@Template=INJECTOR][@Index=10]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=10]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=10]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ11</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=11]|NAME', ".\[@Template=INJECTOR][@Index=11]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=11]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=11]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ12</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=12]|NAME', ".\[@Template=INJECTOR][@Index=12]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=12]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=12]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ13</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=13]|NAME', ".\[@Template=INJECTOR][@Index=13]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=13]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=13]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ14</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=14]|NAME', ".\[@Template=INJECTOR][@Index=14]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=14]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=14]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ15</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=15]|NAME', ".\[@Template=INJECTOR][@Index=15]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=15]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=15]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ16</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=16]|NAME', ".\[@Template=INJECTOR][@Index=16]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=16]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=16]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ17</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=17]|NAME', ".\[@Template=INJECTOR][@Index=17]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=17]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=17]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ18</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=18]|NAME', ".\[@Template=INJECTOR][@Index=18]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=18]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=18]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ19</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=19]|NAME', ".\[@Template=INJECTOR][@Index=19]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=19]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=19]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ2</Name>
+      <Description>Second injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=2]|NAME', ".\[@Template=INJECTOR][@Index=2]|NAME", "UNDEFINED")&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 2 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=2]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=2]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ20</Name>
+      <Description>First injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=20]|NAME', ".\[@Template=INJECTOR][@Index=20]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=20]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=20]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ3</Name>
+      <Description>Third injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=3]|NAME', ".\[@Template=INJECTOR][@Index=3]|NAME", "UNDEFINED")</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 3 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=3]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=3]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ4</Name>
+      <Description>Fourth injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=4]|NAME', ".\[@Template=INJECTOR][@Index=4]|NAME", "UNDEFINED")</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 4 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=4]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=4]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ5</Name>
+      <Description>Fifth injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=5]|NAME', ".\[@Template=INJECTOR][@Index=5]|NAME", "UNDEFINED")</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 5 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=5]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=5]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ6</Name>
+      <Description>Sixth injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=6]|NAME', ".\[@Template=INJECTOR][@Index=6]|NAME", "UNDEFINED")</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 6 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=6]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=6]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ7</Name>
+      <Description>Seventh injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=7]|NAME', ".\[@Template=INJECTOR][@Index=7]|NAME", "UNDEFINED")&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 7 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=7]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=7]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ8</Name>
+      <Description>Heighth injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=8]|NAME', ".\[@Template=INJECTOR][@Index=8]|NAME", "UNDEFINED")&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 8 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=8]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=8]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>INJ9</Name>
+      <Description>Ninth injector connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=INJECTOR][@Index=9]|NAME', ".\[@Template=INJECTOR][@Index=9]|NAME", "UNDEFINED")&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>VR</Name>
+        <Description>Flowrate for the injector 9 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=9]|VR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>VR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=INJECTOR][@Index=9]|VR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>KU</Name>
+      <Description>Total kilogram of U produced by the cell (kg/d) (calculation)</Description>
+      <DefaultUOM>kg/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|PRO1|KU_BALANCED;B=|PRO2|KU_BALANCED;C=|PRO3|KU_BALANCED;D=|PRO4|KU_BALANCED;[A+B+C+D];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_KU</Name>
+        <Description>Last value of KU (kg/d) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_KU_DATE</Name>
+        <Description>Last date for KU (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>LEVEL</Name>
+      <Description>Level of the cell (enumeration) (default: A)</Description>
+      <Type>AFEnumerationValue</Type>
+      <Value type="AFEnumerationValue">36378d16-f799-4385-a5c2-079d9f14bae3?1?A</Value>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PH</Name>
+      <Description>Average of pH for the cell (calculation)</Description>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|PRO1|PH;B=|PRO2|PH;C=|PRO3|PH;D=|PRO4|PH;[(A+B+C+D)/(1+(if B &gt; 0 then 1 else 0)+(if C &gt; 0 then 1 else 0)+(if D &gt; 0 then 1 else 0))];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_PH</Name>
+        <Description>Last value of pH (analysis) (for ArcGIS use)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PH_DATE</Name>
+        <Description>Last date for pH (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PR</Name>
+      <Description>Total flowrate of PR for the cell (m3/h) (calculation)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|PRO1|PR_BALANCED;B=|PRO2|PR_BALANCED;C=|PRO3|PR_BALANCED;D=|PRO4|PR_BALANCED;[A+B+C+D];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_PR</Name>
+        <Description>Last value of PR (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PR_DATE</Name>
+        <Description>Last date for PR (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PRO1</Name>
+      <Description>First producer connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=PRODUCER][@Index=1]|NAME', ".\[@Template=PRODUCER][@Index=1]|NAME", "UNDEFINED")</ConfigString>
+      <AFAttributeTemplate>
+        <Name>KU</Name>
+        <Description>Kilogram of U for the producer 1 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|KU;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>KU_BALANCED</Name>
+        <Description>Kilogram of U for the producer 1 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|KU_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PH</Name>
+        <Description>ph for the producer 1</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|PH;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR</Name>
+        <Description>Flowrate for the producer 1 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|PR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|PR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>U</Name>
+        <Description>Concentration of U for the producer 1 (mg/L)</Description>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=1]|U;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PRO2</Name>
+      <Description>Second producer connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=PRODUCER][@Index=2]|NAME', ".\[@Template=PRODUCER][@Index=2]|NAME", "UNDEFINED")&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>KU</Name>
+        <Description>Kilogram of U for the producer 1 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|KU;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>KU_BALANCED</Name>
+        <Description>Kilogram of U for the producer 2 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|KU_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PH</Name>
+        <Description>ph for the producer 2</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|PH;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR</Name>
+        <Description>Flowrate for the producer 2 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|PR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|PR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>U</Name>
+        <Description>Concentration of U for the producer 2 (mg/L)</Description>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=2]|U;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PRO3</Name>
+      <Description>Third producer connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=PRODUCER][@Index=3]|NAME', ".\[@Template=PRODUCER][@Index=3]|NAME", "UNDEFINED")&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>KU</Name>
+        <Description>Kilogram of U for the producer 1 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|KU;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>KU_BALANCED</Name>
+        <Description>Kilogram of U for the producer 3 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|KU_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PH</Name>
+        <Description>ph for the producer 3</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|PH;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR</Name>
+        <Description>Flowrate for the producer 3 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|PR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|PR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>U</Name>
+        <Description>Concentration of U for the producer 3 (mg/L)</Description>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=3]|U;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PRO4</Name>
+      <Description>Fourth producer connected to the cell</Description>
+      <Type>String</Type>
+      <Value type="String">UNDEFINED</Value>
+      <DataReference>String Builder</DataReference>
+      <ConfigString>Replace('.\[@Template=PRODUCER][@Index=4]|NAME', ".\[@Template=PRODUCER][@Index=4]|NAME", "UNDEFINED")&#xD;
+</ConfigString>
+      <AFAttributeTemplate>
+        <Name>KU</Name>
+        <Description>Kilogram of U for the producer 1 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|KU;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>KU_BALANCED</Name>
+        <Description>Kilogram of U for the producer 4 (kg/d)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|KU_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PH</Name>
+        <Description>ph for the producer 4</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|PH;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR</Name>
+        <Description>Flowrate for the producer 4 (m3/h)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|PR;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>PR_BALANCED</Name>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|PR_BALANCED;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>U</Name>
+        <Description>Concentration of U for the producer 4 (mg/L)</Description>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=.\[@Template=PRODUCER][@Index=4]|U;[if badval(A) then 0 else A]</ConfigString>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>U</Name>
+      <DefaultUOM>mg/L</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|PRO1|U;B=|PRO2|U;C=|PRO3|U;D=|PRO3|U;[(A+B+C+D)/((if badval(B) then 0 else 1)+(if badval(C) then 0 else 1)+(if badval(D) then 0 else 1))];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_U</Name>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_U_DATE</Name>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR</Name>
+      <Description>Total flowrate of VR for the cell (m3/h) (calculation)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=|INJ1|VR_BALANCED;B=|INJ2|VR_BALANCED;C=|INJ3|VR_BALANCED;D=|INJ4|VR_BALANCED;E=|INJ5|VR_BALANCED;F=|INJ6|VR_BALANCED;G=|INJ7|VR_BALANCED;H=|INJ8|VR_BALANCED;I=|INJ9|VR_BALANCED;J=|INJ10|VR_BALANCED;K=|INJ11|VR_BALANCED;L=|INJ12|VR_BALANCED;M=|INJ13|VR_BALANCED;N=|INJ14|VR_BALANCED;O=|INJ15|VR_BALANCED;P=|INJ16|VR_BALANCED;Q=|INJ17|VR_BALANCED;R=|INJ18|VR_BALANCED;S=|INJ19|VR_BALANCED;T=|INJ20|VR_BALANCED;[(if badval(A) then 0 else A) + (if badval(B) then 0 else B) + (if badval(C) then 0 else C) + (if badval(D) then 0 else D) + (if badval(E) then 0 else E) + (if badval(F) then 0 else F) + (if badval(G) then 0 else G) + (if badval(H) then 0 else H) + (if badval(I) then 0 else I) + (if badval(I) then 0 else J) + (if badval(I) then 0 else K) + (if badval(I) then 0 else L) + (if badval(I) then 0 else M) + (if badval(I) then 0 else N) + (if badval(I) then 0 else O) + (if badval(I) then 0 else P) + (if badval(I) then 0 else Q) + (if badval(I) then 0 else R) + (if badval(I) then 0 else S) + (if badval(I) then 0 else T)];DefaultAllowed=1</ConfigString>
+      <AFAttributeCategoryRef>masterdashboard_trend</AFAttributeCategoryRef>
+      <AFAttributeTemplate>
+        <Name>LAST_VR</Name>
+        <Description>Last value of VR (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_VR_DATE</Name>
+        <Description>Last date for VR (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_BALANCE</Name>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastBALANCE := PrevVal('{8a970ed5-42ea-4f1a-8b10-b2611183ebbf};BALANCE','*');</ConfigString>
+        <VariableMapping>LastBALANCE||BALANCE|LAST_BALANCE;[GUID]||{23473b93-d120-4678-9ee5-300d825240a8};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_KU</Name>
+      <Description>Retrieve last KU value (for ArcGIS use)</Description>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastVR := PrevVal('{d18cd14f-a5ee-4a11-bd84-e7006afe7a63};KU', '*');&#xD;
+LastVRDate := TimeStamp(PrevVal('{d18cd14f-a5ee-4a11-bd84-e7006afe7a63};KU','*'));</ConfigString>
+        <VariableMapping>LastVR||KU|LAST_KU;[GUID]||{c96b614e-3313-481d-838b-68c16165b47f};LastVRDate||KU|LAST_KU_DATE;[GUID]||{2767ddb9-1285-4be3-80ca-6d005d175e7c};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PH</Name>
+      <Description>Retrieve last pH value (for ArcGIS use)</Description>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastPH := PrevVal('{c3ba2073-17e2-4175-9e5d-68dd471168ca};PH', '*');&#xD;
+LastPHDate := TimeStamp(PrevVal('{c3ba2073-17e2-4175-9e5d-68dd471168ca};PH','*'));</ConfigString>
+        <VariableMapping>LastPH||PH|LAST_PH;[GUID]||{5e008742-ec3c-4d81-9ccf-7b062379e535};LastPHDate||PH|LAST_PH_DATE;[GUID]||{993707ac-6da9-48f0-9a0f-0fdab311355f};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PR</Name>
+      <Description>Retrieve last PR value (for ArcGIS use)</Description>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastVR := PrevVal('{6300cf60-52b0-4ef4-be55-2b1c717b377e};PR', '*');&#xD;
+LastVRDate := TimeStamp(PrevVal('{6300cf60-52b0-4ef4-be55-2b1c717b377e};PR','*'));</ConfigString>
+        <VariableMapping>LastVR||PR|LAST_PR;[GUID]||{11ad1007-8fff-4b0d-9983-c27df96ab553};LastVRDate||PR|LAST_PR_DATE;[GUID]||{9d679360-1b23-4ca8-9b18-410eb8f60803};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_U</Name>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastVR := PrevVal('{f568eaa7-c310-4d05-b856-32b05725a68d};U', '*');&#xD;
+LastVRDate := TimeStamp(PrevVal('{f568eaa7-c310-4d05-b856-32b05725a68d};U','*'));</ConfigString>
+        <VariableMapping>LastVR||U|LAST_U;[GUID]||{8d5120ba-ede5-447f-a731-5bbf527d1de2};LastVRDate||U|LAST_U_DATE;[GUID]||{487dce8d-9311-491f-9a01-1126a457b627};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_VR</Name>
+      <Description>Retrieve last VR value (for ArcGIS use)</Description>
+      <Target>CELL</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastVR := PrevVal('{56c3d85f-a7da-4224-92e8-cc5c3ba17ca5};VR', '*');&#xD;
+LastVRDate := TimeStamp(PrevVal('{56c3d85f-a7da-4224-92e8-cc5c3ba17ca5};VR','*'));</ConfigString>
+        <VariableMapping>LastVR||VR|LAST_VR;[GUID]||{71af5e96-e47d-4704-8b40-0105feb1024c};LastVRDate||VR|LAST_VR_DATE;[GUID]||{9f434ad1-d864-42ba-83c7-bb0e89b2138f};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>WELL</Name>
+    <Description>Abstract template which contains common attributes for technological wells (should not be instanciated)</Description>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFExtendedProperty>
+      <Name>Override</Name>
+      <Type>Object</Type>
+      <Value />
+    </AFExtendedProperty>
+    <AFAttributeTemplate>
+      <Name>STATUS</Name>
+      <Description>Status of the well (Enumeration) (Default value: Working)</Description>
+      <Type>AFEnumerationValue</Type>
+      <Value type="AFEnumerationValue">da09172f-44ff-4af9-98f4-2c706a3ff059?0?Working</Value>
+    </AFAttributeTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>INJECTOR</Name>
+    <Description>Injector well</Description>
+    <BaseTemplate>WELL</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFElementCategoryRef>asset_design_acid_line</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_cell</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_vr_line</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>NB_PARENTS</Name>
+      <Description>Number of parents (linked to a view)</Description>
+      <Type>Int32</Type>
+      <Value type="Int32">1</Value>
+      <DataReference>Table Lookup</DataReference>
+      <ConfigString>SELECT [NB_PARENTS] FROM [WELL_PARENTS];RWM=0;RWN=0;@t=%Time%;@n=%Element%</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR</Name>
+      <Description>Flow rate of the solution (m3/h) (tag)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_SUMMATOR_VALUE</Name>
+        <DefaultUOM>m3</DefaultUOM>
+        <Type>Int32</Type>
+        <Value type="Int32">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_VR</Name>
+        <Description>Last flowrate value (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_VR_DATE</Name>
+        <Description>Last flowrate date (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR_BALANCED</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=VR;B=NB_PARENTS;[(if badval(A) then 0 else A)/(if badval(B) then 1 else B)]</ConfigString>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_VR</Name>
+      <Description>Retrieve last flowrate value (for ArcGIS use)</Description>
+      <Target>INJECTOR</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastFlow := if BadVal('{43977ff2-2554-4cb0-9121-b7b63d505984};VR') then -1 else PrevVal('{43977ff2-2554-4cb0-9121-b7b63d505984};VR', '*');&#xD;
+LastFlowDate := if BadVal('{43977ff2-2554-4cb0-9121-b7b63d505984};VR') then 0 else TimeStamp(PrevVal('{43977ff2-2554-4cb0-9121-b7b63d505984};VR','*'));</ConfigString>
+        <VariableMapping>LastFlow||VR|LAST_VR;[GUID]||{61f50740-9dcd-4b7f-8a4c-5ab6e8c2837d};LastFlowDate||VR|LAST_VR_DATE;[GUID]||{d9464316-661d-4437-b037-9fdd22de8ccf};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>CONNECTED_INJECTOR</Name>
+    <Description>Connected injector well</Description>
+    <BaseTemplate>INJECTOR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFElementCategoryRef>asset_design_cell</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>VR</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=.\[@Template=INJECTOR_CONNECTION][@Index=1]|VR;B=.\[@Template=INJECTOR_CONNECTION][@Index=1]|NB_CONNECTED;[if badval(A) then 0 else A/B]</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_VR</Name>
+        <Description>Last flowrate value (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_VR_DATE</Name>
+        <Description>Last flowrate date (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR_INITIAL</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.VR</ConfigString>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_VR</Name>
+      <Description>Retrieve last flowrate value (for ArcGIS use)</Description>
+      <Target>CONNECTED_INJECTOR</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastFlow := if BadVal('{bdb06490-2aa6-4fb6-9d79-2bd3865b3791};VR') then -1 else PrevVal('{bdb06490-2aa6-4fb6-9d79-2bd3865b3791};VR', '*');&#xD;
+LastFlowDate := if BadVal('{bdb06490-2aa6-4fb6-9d79-2bd3865b3791};VR') then 0 else TimeStamp(PrevVal('{bdb06490-2aa6-4fb6-9d79-2bd3865b3791};VR','*'));</ConfigString>
+        <VariableMapping>LastFlow||VR|LAST_VR;[GUID]||{6d037fde-8020-4527-9739-353ef41ac0ac};LastFlowDate||VR|LAST_VR_DATE;[GUID]||{e18a69c6-2422-49d5-a735-aada64c9fd6e};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>PR_LINE</Name>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFElementCategoryRef>asset_design</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>PR</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+    </AFAttributeTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>PRODUCER</Name>
+    <Description>Producer well</Description>
+    <BaseTemplate>WELL</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFExtendedProperty>
+      <Name>Override</Name>
+      <Type>Object</Type>
+      <Value />
+    </AFExtendedProperty>
+    <AFElementCategoryRef>asset_design_cell</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_pr_line</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>KU</Name>
+      <Description>Kilogram of U per day (kg/d) (calculation)</Description>
+      <DefaultUOM>kg/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=PR;UOM=m3/d;B=U;UOM=kg/m3;[(if badval(A) then 0 else A) * (if badval(B) then 0 else B)]</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_KU</Name>
+        <Description>Last value of kilogram of U (kg/d) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>kg/d</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_KU_DATE</Name>
+        <Description>Last date for kilogram of U (kg/d) (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>KU_BALANCED</Name>
+      <DefaultUOM>kg/d</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=KU;B=NB_PARENTS;[(if badval(A) then 0 else A)/(if badval(B) then 1 else B)]</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>NB_PARENTS</Name>
+      <Description>Number of parents (linked to a view)</Description>
+      <Type>Int32</Type>
+      <Value type="Int32">1</Value>
+      <DataReference>Table Lookup</DataReference>
+      <ConfigString>SELECT [NB_PARENTS] FROM [WELL_PARENTS];RWM=0;RWN=0;@t=%Time%;@n=%Element%</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PH</Name>
+      <Description>pH of the solution (tag)</Description>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ReadOnly=False;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management;step=1</ConfigString>
+      <AFAttributeTemplate>
+        <Name>BAD_PH</Name>
+        <Description>Truncated trend of pH when the value is &gt; |TARGET (calculation)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PH;B=TARGET;[if badval(A) then 0 else (if A &gt; B then (A - B) else 0)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>GOOD_PH</Name>
+        <Description>Truncated trend of pH when the value is &lt;= |TARGET (calculation)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>Formula</DataReference>
+        <ConfigString>A=|PH;B=TARGET;[if badval(A) then 0 else (if A &lt;= B then A else B)]</ConfigString>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PH</Name>
+        <Description>Last value of pH (analysis) (for ArcGIS use)</Description>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PH_DATE</Name>
+        <Description>Last date for pH (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>TARGET</Name>
+        <Description>Target of good pH (default value 1.8)</Description>
+        <Type>Double</Type>
+        <Value type="Double">1.8</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PR</Name>
+      <Description>Flow rate of the solution (m3/h) (tag)</Description>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ReadOnly=False;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_PR</Name>
+        <Description>Last flowrate value (m3/h) (analysis) (for ArcGIS use)</Description>
+        <DefaultUOM>m3/h</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_PR_DATE</Name>
+        <Description>Last flowrate date (analysis) (for ArcGIS use)</Description>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_SUMMATOR_VALUE</Name>
+        <DefaultUOM>m3</DefaultUOM>
+        <Type>Int32</Type>
+        <Value type="Int32">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>PR_BALANCED</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>Formula</DataReference>
+      <ConfigString>A=PR;B=NB_PARENTS;[(if badval(A) then 0 else A)/(if badval(B) then 1 else B)]</ConfigString>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>U</Name>
+      <Description>Concentration of U of the solution (mg/L) (tag)</Description>
+      <DefaultUOM>mg/L</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ReadOnly=False;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management;step=1</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_U</Name>
+        <DefaultUOM>mg/L</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>LAST_U_DATE</Name>
+        <Type>DateTime</Type>
+        <Value type="DateTime">1970-01-01T00:00:00Z</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_KU</Name>
+      <Description>Retrieve last KU value (for ArcGIS use)</Description>
+      <Target>PRODUCER</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastPH := if BadVal('{ddb74a74-3d31-44c5-9c6a-21f5080df155};KU') then -1 else PrevVal('{ddb74a74-3d31-44c5-9c6a-21f5080df155};KU', '*');&#xD;
+LastPHDate := if BadVal('{ddb74a74-3d31-44c5-9c6a-21f5080df155};KU') then 0 else TimeStamp(PrevVal('{0fad772e-3528-4341-9d3b-6b6e2d50beb1};U','*'));</ConfigString>
+        <VariableMapping>LastPH||KU|LAST_KU;[GUID]||{7c7cbfee-ec24-403a-8a25-befcc02c3252};LastPHDate||KU|LAST_KU_DATE;[GUID]||{30e45dd2-af78-42ac-95f3-b2ac313649d0};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PH</Name>
+      <Description>Retrieve last pH value (for ArcGIS use)</Description>
+      <Target>PRODUCER</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastPH := if BadVal('{262a23bd-2330-46f1-a9d1-28d6deea5c73};PH') then -1 else PrevVal('{262a23bd-2330-46f1-a9d1-28d6deea5c73};PH', '*');&#xD;
+LastPHDate := if BadVal('{262a23bd-2330-46f1-a9d1-28d6deea5c73};PH') then 0 else TimeStamp(PrevVal('{262a23bd-2330-46f1-a9d1-28d6deea5c73};PH','*'));</ConfigString>
+        <VariableMapping>LastPH||PH|LAST_PH;[GUID]||{7b2ed151-e69f-4615-a6e1-54f945fa91e2};LastPHDate||PH|LAST_PH_DATE;[GUID]||{1a2c8306-220a-4fef-8d5d-c46d98b88559};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_PR</Name>
+      <Description>Retrieve last flowrate value (for ArcGIS use)</Description>
+      <Target>PRODUCER</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastFlow := if BadVal('{dc4a8327-cf9f-4127-bb29-8adbb726abdf};PR') then -1 else PrevVal('{dc4a8327-cf9f-4127-bb29-8adbb726abdf};PR', '*');&#xD;
+LastFlowDate := if BadVal('{dc4a8327-cf9f-4127-bb29-8adbb726abdf};PR') then 0 else TimeStamp(PrevVal('{dc4a8327-cf9f-4127-bb29-8adbb726abdf};PR','*'));</ConfigString>
+        <VariableMapping>LastFlow||PR|LAST_PR;[GUID]||{4056ee06-87c0-4339-bfe8-d622309c3248};LastFlowDate||PR|LAST_PR_DATE;[GUID]||{e53fdd93-5c90-4a23-a4b2-4a98d5e92178};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+    <AFAnalysisTemplate>
+      <Name>LAST_U</Name>
+      <Target>PRODUCER</Target>
+      <AFAnalysisRule>
+        <AFPlugIn>PerformanceEquation</AFPlugIn>
+        <ConfigString>LastPH := if BadVal('{0fad772e-3528-4341-9d3b-6b6e2d50beb1};U') then -1 else PrevVal('{0fad772e-3528-4341-9d3b-6b6e2d50beb1};U', '*');&#xD;
+LastPHDate := if BadVal('{0fad772e-3528-4341-9d3b-6b6e2d50beb1};U') then 0 else TimeStamp(PrevVal('{0fad772e-3528-4341-9d3b-6b6e2d50beb1};U','*'));</ConfigString>
+        <VariableMapping>LastPH||U|LAST_U;[GUID]||{8e5e6e32-c205-4c7c-926e-c7a0bec93e7c};LastPHDate||U|LAST_U_DATE;[GUID]||{76714e2a-2418-4023-8250-d34807deb049};[GUID]||[UNSET];</VariableMapping>
+      </AFAnalysisRule>
+      <AFTimeRule>
+        <AFPlugIn>Periodic</AFPlugIn>
+      </AFTimeRule>
+    </AFAnalysisTemplate>
+  </AFElementTemplate>
+  <AFElementTemplate>
+    <Name>VR_LINE</Name>
+    <BaseTemplate>ISR</BaseTemplate>
+    <Type>None</Type>
+    <InstanceType>Element</InstanceType>
+    <AllowElementToExtend>false</AllowElementToExtend>
+    <AFElementCategoryRef>asset_design</AFElementCategoryRef>
+    <AFElementCategoryRef>asset_design_block</AFElementCategoryRef>
+    <AFAttributeTemplate>
+      <Name>LAST_SUMMATOR</Name>
+      <DefaultUOM>m3</DefaultUOM>
+      <Type>Int32</Type>
+      <Value type="Int32">0</Value>
+    </AFAttributeTemplate>
+    <AFAttributeTemplate>
+      <Name>VR</Name>
+      <DefaultUOM>m3/h</DefaultUOM>
+      <Type>Double</Type>
+      <Value type="Double">0</Value>
+      <DataReference>PI Point</DataReference>
+      <ConfigString>\\%Server%\%Element%.%Attribute%;ptclassname=classic;pointtype=Float64;descriptor=Well Field Management</ConfigString>
+      <AFAttributeTemplate>
+        <Name>LAST_SUMMATOR_VALUE</Name>
+        <DefaultUOM>m3</DefaultUOM>
+        <Type>Int32</Type>
+        <Value type="Int32">0</Value>
+      </AFAttributeTemplate>
+    </AFAttributeTemplate>
+  </AFElementTemplate>
+</AF>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.9.5.8352" ExportMode="NoUniqueID" PISystem="PISRV01" Database="Configuration" Description="A store for configuration data." Created="2018-11-09T01:01:14.5008126Z" id="0d1aae3c-e027-11e7-a950-000d3a304271" ParentKey="0d1aae36-e027-11e7-a950-000d3a304271" ExportedObject="System Configuration" ExportedType="AFElement" Identity="Element" PIPersist="202 {9895150E-085D-4fcb-A16D-5EF5D2527196} 2\{fa17c4c1-5f05-4596-9b40-a616e67313e5}\Elements[{0d1aae3c-e027-11e7-a950-000d3a304271}]*PISRV01\Configuration\OSIsoft\PI Web API\PISRV01\System Configuration">
+  <AFElement>
+    <Name>System Configuration</Name>
+    <AFAttribute>
+      <Name>AuthenticationMethods</Name>
+      <Description>An array of authentication methods</Description>
+      <Type>String[]</Type>
+      <Value type="String[2]">
+        <Item>Kerberos</Item>
+        <Item>Basic</Item>
+      </Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>CorsExposedHeaders</Name>
+      <Description>A comma-separated list of HTTP response headers that browsers are allowed to access</Description>
+      <Type>String</Type>
+      <Value type="String">Allow,Content-Encoding,Content-Length,Date,Location</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>CorsHeaders</Name>
+      <Description>A comma-separated list of HTTP header keys that are allowed for cross-domain requests</Description>
+      <Type>String</Type>
+      <Timestamp>2018-11-08T13:02:50.0866503Z</Timestamp>
+      <Value type="String">*</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>CorsMethods</Name>
+      <Description>A comma-separated list of HTTP methods (verbs) that are allowed for cross-domain requests</Description>
+      <Type>String</Type>
+      <Timestamp>2018-11-08T13:02:00.7350664Z</Timestamp>
+      <Value type="String">GET,OPTIONS,POST,PUT</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>CorsOrigins</Name>
+      <Description>A comma-separated list of domains from which cross-domain requests may originate</Description>
+      <Type>String</Type>
+      <Value type="String">*</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>CorsSupportsCredentials</Name>
+      <Description>Indicates whether or not the browser can send and receive authentication information along with a cross-domain request and response</Description>
+      <Type>Boolean</Type>
+      <Value type="Boolean">True</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>DisableWrites</Name>
+      <Description>When set to true, disable PI Web API writes to the PI System</Description>
+      <Type>Boolean</Type>
+      <Value type="Boolean">False</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>EnableCSRFDefense</Name>
+      <Description>Indicates whether or not the defense against Cross-Site Request Forgery is enabled</Description>
+      <Type>Boolean</Type>
+      <Value type="Boolean">True</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>SearchBoosts</Name>
+      <Description>An array of values used to weight the priority of the associated field when calculating a score</Description>
+      <Type>Single[]</Type>
+      <Value type="Single[7]">
+        <Item>1</Item>
+        <Item>0.8</Item>
+        <Item>0.5</Item>
+        <Item>0.5</Item>
+        <Item>0.5</Item>
+        <Item>0.5</Item>
+        <Item>0.5</Item>
+      </Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>SearchPointAttributes</Name>
+      <Description>An array of additional PI Point attributes to be stored in the index</Description>
+      <Type>String[]</Type>
+      <Value type="String[4]">
+        <Item>pointsource</Item>
+        <Item>instrumenttag</Item>
+        <Item>location1</Item>
+        <Item>exdesc</Item>
+      </Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>SearchScanInterval</Name>
+      <Description>Time (in seconds) between each incremental crawl</Description>
+      <Type>Int32</Type>
+      <Value type="Int32">180</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>WebIDType</Name>
+      <Description>String indicating the default Web ID type which the PI Web API will respond with when a request does not specify a preferred type</Description>
+      <Type>String</Type>
+      <Value type="String">Full</Value>
+    </AFAttribute>
+    <AFAttribute>
+      <Name>XFrameOptions</Name>
+      <Description>Setting for the X-Frame-Options response header</Description>
+      <Type>String</Type>
+      <Value type="String">SAMEORIGIN</Value>
+    </AFAttribute>
+  </AFElement>
+</AF>
