@@ -1,9 +1,9 @@
 /***CONFIGURATION SETTING***/
 
-var baseServiceUrl = "https://ecgdevserver:1706/piwebapi/"; /***PI WEBAPI URL***/
-var user = "piwebapiuser";/***USERNAME***/
-var pass = "webapiuser@2019";/***PASSWORD***/
-var afServerName = "ECGDEVSERVER";/***AF SERVER NAME***/
+var baseServiceUrl = "https://localhost:1706/piwebapi/";//"https://ecgdevserver:1706/piwebapi/"; /***PI WEBAPI URL***/
+var user = "ashif";//"piwebapiuser";/***USERNAME***/
+var pass = "Ecgit@123";//"webapiuser@2019";/***PASSWORD***/
+var afServerName = "ASHIF-DMGLBQI";//"ECGDEVSERVER";/***AF SERVER NAME***/
 var afDatabaseName = "Apoio";//Aasif_Development//"Mayhar";/***DATABASE NAME***/
 var EnumerationSets = "CONNECTED_TO_PLANT";/***ENUMERATION SET NAME***/
 var masterTemplateName = "BLOCK";/***MASTER TEMPLATE NAME***/
